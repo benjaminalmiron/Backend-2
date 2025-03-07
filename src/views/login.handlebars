@@ -1,0 +1,30 @@
+<main>
+    <div>
+        <h1>Iniciar Sesion</h1>
+        <form action="/api/sessions/login" method="post">
+            <input type="text" name="email" placeholder="Ingrese email" required>
+            <input type="password" name="password" placeholder="Ingrese contraseña" required>
+            <button type="submit">Enviar</button>
+        </form>
+        <a href="/register">Registrarse</a>
+    </div>
+</main>
+{{!-- <script>
+    let obj = {}
+    fetch('/api/sessions/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(obj)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+    })
+    .catch(error => {
+        console.error(error)
+    })
+
+
+</script> --}}
