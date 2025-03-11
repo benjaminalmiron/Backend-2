@@ -9,6 +9,9 @@ import { engine } from 'express-handlebars';
 import passport from 'passport';
 import { inicializarPassport } from './config/passport.config.js';
 import cookieParser from 'cookie-parser';
+import userRouter from './routes/api/usersParams.router.js';
+
+
 
 dotenv.config();
 
@@ -41,10 +44,12 @@ mongoose.connect(URIMongoDB)
     });
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+    res.render("login")
 });
 
 app.use("/api/sessions", sessionsRouter);
+const userRouterInstance = new userRouter();
+app.use("/api/users", userRouterInstance.returnRouter());
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -11,20 +11,32 @@ const sessionsRouter = Router();
 
 
 
-sessionsRouter.post ("/register", async (req, res) => {
+sessionsRouter.post("/register", async (req, res) => {
     const { username, email, password } = req.body;
+    
     if (!username || !email || !password) {
         return res.status(400).send("Faltan campos por llenar");
     }
-    const userFound = await User.findOne({email});
+    if (!isNaN(username)) {
+        return res.status(400).send("El nombre de usuario no puede ser solo un número");
+    }
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).send("El correo electrónico debe ser de tipo @gmail.com");
+    }
+
+    if (password.length <= 4) {
+        return res.status(400).send("La contraseña debe tener más de 4 caracteres");
+    }
+    const userFound = await User.findOne({ email });
     if (userFound) {
         return res.status(401).send("El usuario ya existe");
     }
-    const newUser = {username, email, password: await hash(password)};
+    const newUser = { username, email, password: await hash(password) };
     const result = await User.create(newUser);
     res.status(201).send(result);
-    res.send("register");
-})
+});
+
 
 
 sessionsRouter.post("/login", async (req, res) => {
@@ -57,8 +69,12 @@ sessionsRouter.post("/login", async (req, res) => {
 });
 
 sessionsRouter.get("/login", (req, res) => {
-    // Suponiendo que estás utilizando un motor de plantillas como Handlebars
-    res.render("login");  // Aquí debes tener un archivo de vista llamado "login.handlebars" o "login.hbs"
+    
+    res.render("login"); 
+});
+sessionsRouter.get("/register", (req, res) => {
+    
+    res.render("register");  
 });
 
 sessionsRouter.get("/current", passportAuth("jwt"), authorization("admin"), (req, res) => {
