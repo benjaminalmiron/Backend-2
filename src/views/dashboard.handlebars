@@ -1,0 +1,14 @@
+<main>
+    <div>
+        <h1>Bienvenido al Dashboard</h1>
+        
+        <!-- Botón de cerrar sesión solo si el usuario está logueado -->
+        {{#if isLoggedIn}}
+        <form action="/api/sessions/logout" method="post">
+            <button type="submit">Cerrar sesión</button>
+        </form>
+        {{else}}
+        <p>Por favor, inicia sesión para acceder al dashboard</p>
+        {{/if}}
+    </div>
+</main>

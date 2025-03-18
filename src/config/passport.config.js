@@ -1,7 +1,7 @@
 import passport from "passport";
 import jwt from "passport-jwt";
-
 import { secretKey } from "../utils/Token.js";
+import  User  from "../models/users.model.js";
 
 const JwtStrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
@@ -14,7 +14,7 @@ export const inicializarPassport = () => {
     if (req && req.cookies) {
         token = req.cookies["cookieHouse"];
     }
-    console.log("Token extraído de la cookie:", token); // Verifica si el token se extrae correctamente
+    console.log("Token extraído de la cookie:", token); 
     return token;
 };
 
@@ -24,7 +24,12 @@ export const inicializarPassport = () => {
     }, async (dataToken, done) => {
         try {
             console.log("Datos del token:", dataToken);  
-            return done(null, dataToken); 
+            const user = await User.findById(dataToken.id);
+            if (!user) {
+                return done(null, false, { message: "Usuario no encontrado" });
+            }
+           
+            return done(null, user);
         } catch (error) {
             console.error("Error en la estrategia de passport:", error);
             return done(error, false);

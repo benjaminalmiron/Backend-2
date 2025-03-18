@@ -1,14 +1,46 @@
-<main>
-    <div>
-        <h1>Iniciar Sesion</h1>
-        <form action="/api/sessions/login" method="post">
-            <input type="text" name="email" placeholder="Ingrese email" required>
-            <input type="password" name="password" placeholder="Ingrese contraseña" required>
-            <button type="submit">Enviar</button>
-        </form>
-        <a href="/api/sessions/register">Registrate si no tienes cuenta</a>
-    </div>
-</main>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <!-- Ruta correcta para el archivo CSS -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <main>
+        <div>
+            <h1>Iniciar Sesión</h1>
+
+            <!-- Mostrar mensaje flash de éxito (logout exitoso) -->
+            {{#if success_msg}}
+            <div class="alert success">
+                {{success_msg}}
+            </div>
+            {{/if}}
+
+            {{#if isLoggedIn}}
+            <!-- Si el usuario está logueado, mostrar el botón de Cerrar sesión -->
+            <form action="/api/sessions/logout" method="post">
+                <button type="submit">Cerrar sesión</button>
+            </form>
+            {{else}}
+            <!-- Si el usuario no está logueado, mostrar el formulario de login -->
+            <form action="/api/sessions/login" method="post">
+                <input type="text" name="email" placeholder="Ingrese email" required>
+                <input type="password" name="password" placeholder="Ingrese contraseña" required>
+                <button type="submit">Enviar</button>
+            </form>
+            <a href="/api/sessions/register">Regístrate si no tienes cuenta</a>
+            {{/if}}
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
 {{!-- <script>
     let obj = {}
     fetch('/api/sessions/login', {
