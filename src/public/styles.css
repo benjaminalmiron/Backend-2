@@ -1,4 +1,7 @@
-/* Estilo para el mensaje flash (alerta) */
+@import "tailwindcss";
+
+
+
 .alert {
     padding: 20px;
     background-color: #f44336;  /* Rojo (puedes cambiarlo por otro color) */

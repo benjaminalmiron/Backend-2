@@ -4,7 +4,7 @@ import sessionsRouter from './routes/api/sessions.router.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import path from 'path';
-import rootDir from "./dirname.js"
+import __dirname from "./dirname.js"
 import { engine } from 'express-handlebars';
 import passport from 'passport';
 import { inicializarPassport } from './config/passport.config.js';
@@ -20,7 +20,7 @@ dotenv.config();
 
 const app = express();
 const PORT = configObject.port;
-const staticDir = path.join(rootDir, 'public');
+const staticDir = path.join(__dirname,  'public');
 app.use(express.static(staticDir));
 console.log('Archivos estáticos sirven desde:', staticDir);
 
@@ -29,7 +29,7 @@ console.log('Archivos estáticos sirven desde:', staticDir);
 
 app.engine("handlebars", engine({ defaultLayout: false }));  // Deshabilitar el layout por defecto
 app.set("view engine", "handlebars");
-app.set("views", path.join(rootDir, "views"));
+app.set("views", path.join(__dirname, "views"));
 
 
 app.use(express.json());
