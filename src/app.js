@@ -12,6 +12,9 @@ import cookieParser from 'cookie-parser';
 import userRouter from './routes/api/usersParams.router.js';
 import session from 'express-session';
 import flash from 'connect-flash';
+import usersRouter from './routes/api/users.router.js';
+import productsRouter from './routes/products.router.js';
+
 
 
 dotenv.config();
@@ -56,12 +59,16 @@ if (!URIMongoDB) {
     process.exit(1);
 }
 
-mongoose.connect(URIMongoDB)
+/* mongoose.connect(URIMongoDB)
     .then(() => console.log("Conexión a base de datos exitosa"))
     .catch((error) => {
         console.error("Error en conexión: ", error);
         process.exit();
-    });
+    }); */
+
+conectDB();
+
+
 
     app.get("/", (req, res) => {
         console.log("Ruta / recibida");
@@ -102,10 +109,11 @@ mongoose.connect(URIMongoDB)
     });
     
 
-
+app.use("/api/products", productsRouter);
 app.use("/api/sessions", sessionsRouter);
 const userRouterInstance = new userRouter();
-app.use("/api/users", userRouterInstance.returnRouter());
+/* app.use("/api/users", userRouterInstance.returnRouter()); */
+app.use("/api/users", usersRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

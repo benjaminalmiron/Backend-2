@@ -1,5 +1,5 @@
 
-import SessionsDAO from "../managers/sessions.dao.js";
+import SessionsDAO from "../daos/sessions.dao.js";
 import { hash, isValidPassword } from "../utils/hash.js";
 import generateToken, { createToken } from "../utils/Token.js";
 
