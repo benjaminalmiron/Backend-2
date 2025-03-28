@@ -14,7 +14,12 @@ import session from 'express-session';
 import flash from 'connect-flash';
 import usersRouter from './routes/api/users.router.js';
 import productsRouter from './routes/products.router.js';
-
+import cors from 'cors';
+import productsModel from './daos/MONGO/models/products.model.js';
+import passportAuth from './middlewares/passport.auth.js';
+import Cart from "./daos/MONGO/models/cart.model.js"
+import cartRouter from './routes/api/carts.router.js';
+import methodOverride from 'method-override'
 
 
 dotenv.config();
@@ -26,11 +31,31 @@ const PORT = configObject.port;
 const staticDir = path.join(__dirname,  'public');
 app.use(express.static(staticDir));
 console.log('Archivos estáticos sirven desde:', staticDir);
+app.use(methodOverride('_method'))
 
 
 
-
-app.engine("handlebars", engine({ defaultLayout: false }));  // Deshabilitar el layout por defecto
+app.engine('handlebars', engine({
+    helpers: {
+      multiply: function(a, b) {
+        // Asegurarse de que ambos valores son números antes de multiplicar
+        const numA = Number(a);
+        const numB = Number(b);
+  
+        // Si no son números, devolver 0
+        if (isNaN(numA) || isNaN(numB)) {
+          return 0;
+        }
+  
+        // Realiza la multiplicación
+        return numA * numB;
+      }
+    },
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    }
+  }));
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
@@ -40,7 +65,7 @@ app.use(express.urlencoded({ extended: true }));
 inicializarPassport();
 app.use(passport.initialize());
 app.use(cookieParser());
-
+app.use(cors());
 
 
 app.use(session({
@@ -70,12 +95,35 @@ conectDB();
 
 
 
-    app.get("/", (req, res) => {
+// En tu ruta de productos, asegúrate de pasar el usuario a la vista
+app.get("/", async (req, res) => {
+    try {
+        const products = await productsModel.find();
+        const user = req.user || null;  // Pasar el usuario (si está autenticado)
+
+        res.render("products", {
+            products: products,
+            user: user,  // Asegúrate de pasar el usuario a la vista
+        });
+    } catch (error) {
+        console.error("Error al obtener los productos:", error);
+        res.status(500).send("Hubo un error al obtener los productos.");
+    }
+});
+
+
+    
+    
+    
+    
+    
+
+     app.get("/dashboard", async (req, res) => {
         console.log("Ruta / recibida");
     
         // Verificar si la cookie 'cookieHouse' existe (indicando que el usuario está logueado)
         const isLoggedIn = req.cookies.cookieHouse ? true : false;
-        console.log("Estado de login (cookieHouse): ", isLoggedIn);
+        /* console.log("Estado de login (cookieHouse): ", isLoggedIn); */
     
         if (isLoggedIn) {
             // Si está logueado, redirigir a la página de inicio
@@ -85,30 +133,36 @@ conectDB();
     
         // Pasar el mensaje flash a la vista de login
         const flashMessage = req.flash('success_msg');  // Recuperar mensaje flash
-        console.log("Mensaje flash para mostrar: ", flashMessage);
+        /* console.log("Mensaje flash para mostrar: ", flashMessage); */
     
         // Si no está logueado, renderizar el formulario de login
-        console.log("Renderizando login");
+        /* console.log("Renderizando login"); */
         res.render("login", { success_msg: flashMessage });
-    });
+    }); 
     
-    
-    
+   
 
-    app.get("/dashboard", (req, res) => {
-        // Verifica si el usuario está logueado mediante la cookie
-        const isLoggedIn = req.cookies.cookieHouse ? true : false;
-    
-        // Si el usuario no está logueado, redirige al login
-        if (!isLoggedIn) {
-            return res.redirect("/");  // Redirige al login si no está autenticado
-        }
-    
-        // Si está logueado, renderiza el dashboard
-        res.render("dashboard", { isLoggedIn: true });
-    });
-    
+// Ruta para mostrar el carrito
+app.get('/cart', passportAuth('jwt'), async (req, res) => {
+    const userId = req.user._id;  // Usamos el user ID del usuario autenticado
+    try {
+        // Buscar el carrito y poblar los productos
+        const cart = await Cart.findOne({ user: userId }).populate('products.productId');
+        
+        console.log("Carrito con productos poblados:", cart);  // Verificar si el carrito tiene los productos correctamente poblados
 
+        // Renderizar la vista carrito.handlebars
+        res.render('carrito', { cart });
+
+    } catch (error) {
+        console.error("Error al obtener el carrito:", error);
+        res.status(500).send("Error al obtener el carrito");
+    }
+});
+
+
+    
+app.use('/cart', cartRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/sessions", sessionsRouter);
 const userRouterInstance = new userRouter();

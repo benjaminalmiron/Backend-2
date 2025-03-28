@@ -1,6 +1,8 @@
 const authorization = role => { 
     return async (req, res, next) => {
-        if(!req.user) {
+        console.log("req.user:", req.user);  // Agrega un log aquí para ver qué hay en req.user
+
+        if (!req.user) {
             return res.status(401).send("No autorizado");
         }
         if (req.user.role !== role) {

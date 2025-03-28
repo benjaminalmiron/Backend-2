@@ -9,7 +9,7 @@ class userController {
         res.send("User created");
     }
     getUsers = async (req, res) =>{
-        const users = await this.service.getUsers();
+        const users = await this.service.get();
         res.send({status: "ok", payload: users});
     }
     getUser(req, res) {

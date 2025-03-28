@@ -24,12 +24,17 @@ sessionsRouter.get("/register", (req, res) => {
     res.render("register");  
 });
 
-sessionsRouter.get("/current", passportAuth("jwt"), /* authorization("admin"), */ (req, res) => {
+sessionsRouter.get("/current", passportAuth("jwt"), authorization("admin"), (req, res) => {
     if (!req.user) {
         return res.status(401).send({ error: "No autorizado" });
     }
-    console.log("Usuario autenticado:", req.user);
-    res.send({ Usuario: "autenticado", payload: req.user });
+    const { username, email, role } = req.user;
+    res.send({
+        Usuario: "autenticado",
+        username,
+        email,
+        role
+    });
 });
 
 export default sessionsRouter;

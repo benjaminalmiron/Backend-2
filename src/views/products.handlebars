@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<body>
+    <h1>Productos Disponibles</h1>
+
+    {{#if products.length}}
+        <ul>
+            {{#each products}}
+                <li>
+                    <h3>{{this.title}}</h3>
+                    <p>Precio: ${{this.price}}</p>
+                    <p>{{this.description}}</p>
+                    <form action="/cart/add" method="POST">
+                        <input type="hidden" name="productId" value="{{this._id}}">
+                        <input type="number" name="quantity" value="1" min="1" required>
+                        <button type="submit">Agregar al Carrito</button>
+                    </form>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No hay productos disponibles en este momento.</p>
+    {{/if}}
+
+    <!-- Formulario para Cerrar sesión -->
+    <form id="logoutForm" action="/api/sessions/logout" method="post">
+        <button type="submit" class="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200">
+            Cerrar sesión
+        </button>
+    </form>
+
+    <script>
+        // Obtener el formulario de cierre de sesión
+        const logoutForm = document.getElementById('logoutForm');
+        
+        logoutForm.addEventListener('submit', function(event) {
+            event.preventDefault();  // Evitar el envío tradicional del formulario
+
+            // Enviar la solicitud de cierre de sesión usando fetch
+            fetch(logoutForm.action, {
+                method: logoutForm.method,
+                credentials: 'same-origin'  // Enviar cookies si es necesario
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirigir al usuario al dashboard después de cerrar sesión
+                    window.location.href = "/dashboard";  // Redirige al dashboard
+                } else {
+                    console.error("Error al cerrar sesión");
+                }
+            })
+            .catch(error => {
+                console.error("Error en la solicitud:", error);
+            });
+        });
+    </script>
+</body>
+</html>

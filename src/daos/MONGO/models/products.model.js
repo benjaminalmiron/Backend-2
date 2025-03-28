@@ -8,7 +8,7 @@ const productSchema = new Schema({
     /* image: { type: String, required: true } */
 });
 
-const productsModel = model("products", productSchema);
+const productsModel = model("products2", productSchema);
 
 
 export default productsModel;

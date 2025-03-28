@@ -76,7 +76,7 @@ login = async (req, res) => {
         samesite: "None",
         secure: true,
         httpOnly: true
-    }).redirect("/dashboard");  
+    }).redirect("/");  
 }
 
 logout = async (req, res) => {

@@ -1,5 +1,7 @@
 import productService from "../services/index.js";
 import { Types } from 'mongoose';
+import authorization from "../middlewares/authorization.middleware.js";
+
 class ProductController{
     constructor(){
         this.service = productService
@@ -38,7 +40,7 @@ class ProductController{
         }
     };
     
-    getProducts =async (req, res) => {
+    getProducts = async  (req, res) => {
         try {
             const products = await this.service.getProducts(); 
             res.status(200).json({status : "success", data : products});

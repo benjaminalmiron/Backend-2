@@ -5,15 +5,23 @@ class userDAO {
         this.User = User;
     }
 
-    getUsers = async _ => await this.User.find({})
+    get = async _ => await this.User.find({})
 
-    createUser = async newUser => await 
+    create = async newUser => await 
          this.User.create(newUser);
     
-         getUserByUsername = async (username) => {
-            return await this.User.findOne({username: username});
+         getBy = async  (filter ) => {
+            return await this.User.findOne(filter);
         }
+        update = async (filter, update) => {
+            return await this.User.findOneAndUpdate(filter, update, {new: true});
+        }
+        delete = async filter => {
+            return await this.User.findOneAndDelete(filter);
         }
 
+    }
+
+        
 
 export default  userDAO;
