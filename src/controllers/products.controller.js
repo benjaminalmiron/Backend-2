@@ -10,7 +10,7 @@ class ProductController{
     createProduct =  async (req, res) => {
         try {
             const product = await this.service.createProduct(req.body);
-            /* await product.save(); */
+            
             res.status(201).send(product);
         } catch (error) {
             res.status(500).send(error);
@@ -19,7 +19,7 @@ class ProductController{
     getProduct = async (req, res) => {
         const { pid } = req.params;
     
-        // Verificar si el ID es válido
+        
         if (!Types.ObjectId.isValid(pid)) {
             console.log(`ID no válido: ${pid}`);
             return res.status(400).send({ message: "ID no válido" });

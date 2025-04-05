@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión</title>
-    <!-- Ruta correcta para el archivo CSS -->
+   
     <link href="/output.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
     <main class="flex justify-center items-center min-h-screen">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
             <h1 class="text-2xl font-bold text-center text-gray-700 mb-6">Iniciar Sesión</h1>
-
-            <!-- Mostrar mensaje flash de éxito (logout exitoso) -->
             {{#if success_msg}}
             <div class="alert alert-success text-green-700 bg-green-100 border border-green-300 rounded-lg p-3 mb-4">
                 {{success_msg}}
@@ -20,20 +18,17 @@
             {{/if}}
 
             {{#if isLoggedIn}}
-            <!-- Si el usuario está logueado, mostrar el botón de Cerrar sesión -->
             <form action="/api/sessions/logout" method="post">
                 <button type="submit" class="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200">
                     Cerrar sesión
                 </button>
             </form>
             {{else}}
-            <!-- Si el usuario no está logueado, mostrar el formulario de login -->
             <form action="/api/sessions/login" method="post" class="space-y-4">
                 <input type="text" name="email" placeholder="Ingrese email" required
                     class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <input type="password" name="password" placeholder="Ingrese contraseña" required
                     class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <!-- Botón azul para Iniciar sesión -->
                 <button type="submit" style="cursor: pointer;" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
                     Iniciar sesión
                 </button>
@@ -44,31 +39,10 @@
                 <a href="/api/sessions/register" class="text-blue-500 hover:text-blue-700">Regístrate si no tienes cuenta</a>
             </div>
             {{/if}}
+            <div class="text-center mt-4">
+                <a href="/" class="text-blue-500 hover:text-blue-700">Ver Productos</a>
+            </div>
         </div>
     </main>
 </body>
 </html>
-
-
-
-
-
-{{!-- <script>
-    let obj = {}
-    fetch('/api/sessions/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(obj)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-    })
-    .catch(error => {
-        console.error(error)
-    })
-
-
-</script> --}}

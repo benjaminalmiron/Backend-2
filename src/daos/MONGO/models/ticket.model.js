@@ -25,28 +25,6 @@ const ticketSchema = new Schema({
   },
 });
 
-
-/* const Ticket = mongoose.model('Ticket', ticketSchema);
+const Ticket = mongoose.model('Ticket', ticketSchema);
 
 export default Ticket;
-
-import Ticket from './models/Ticket.js';  // Importamos el modelo Ticket
-
-// Función para crear un nuevo ticket
-const createTicket = async (amount, purchaserEmail) => {
-  try {
-    const newTicket = new Ticket({
-      amount: amount,
-      purchaser: purchaserEmail,
-    });
-
-    await newTicket.save();
-    console.log("Ticket creado:", newTicket);
-  } catch (error) {
-    console.error("Error al crear el ticket:", error);
-  }
-};
-
-// Ejemplo de uso
-createTicket(100, 'user@example.com');
- */

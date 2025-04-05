@@ -70,7 +70,7 @@ login = async (req, res) => {
         role: userFound.role
     });
 
-    // Establecer la cookie
+   
     res.cookie("cookieHouse", token, {
         expires: new Date(Date.now() + 8 * 3600000),
         samesite: "None",
@@ -83,26 +83,26 @@ logout = async (req, res) => {
     try {
         console.log("Logout iniciado");
 
-        // Verificar si la cookie existe antes de eliminarla
+        
         console.log("Cookie antes de eliminarla: ", req.cookies.cookieHouse);
 
-        // Eliminar la cookie de la sesión
+        
         res.clearCookie("cookieHouse", {
             path: "/",
-            secure: false,  // Cambia a false si no estás usando HTTPS
+            secure: false,  
             httpOnly: true,
             samesite: "Lax"
         });
 
-        // Verificar si la cookie ha sido eliminada
+        
         console.log("Cookie después de eliminarla: ", req.cookies.cookieHouse);
 
-        // Establecer el mensaje flash
+        
         req.flash('success_msg', 'Logout exitoso. Por favor, inicia sesión nuevamente.');
 
-        // Redirigir al login después de hacer logout
+        
         console.log("Redirigiendo al login...");
-        res.redirect("/");  // Redirige a la página de login
+        res.redirect("/dashboard");  
 
     } catch (error) {
         console.log("Error en el proceso de logout: ", error);

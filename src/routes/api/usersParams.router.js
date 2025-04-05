@@ -10,10 +10,6 @@ class userRouter extends RouterClass {
     } catch (error) { 
       res.sendError( error);
     }
-    
-
-
-
   })
 }
 }

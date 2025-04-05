@@ -1,22 +1,7 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../../utils/Token.js";
-/* 
-const router = Router();
 
-router.param("id", async (req, res, next, id) => {
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }  
-    req.user = user;
-    next();
-    } catch (error) {
-        next(error);
-        }
-    }
-); */
 
 class RouterClass {
   constructor() {

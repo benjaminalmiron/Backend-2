@@ -12,8 +12,8 @@ const passportAuth = (strategy) => {
                 });
             }
 
-            req.user = user;  // Aquí estamos asignando el usuario autenticado a req.user
-            console.log("Usuario autenticado:", req.user);  // Verifica que req.user se esté asignando correctamente
+            req.user = user; 
+            console.log("Usuario autenticado:", req.user);  
             next();
         })(req, res, next);
     };

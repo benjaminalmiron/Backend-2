@@ -7,7 +7,7 @@ dotenv.config();
 const JwtStrategy = jwt.Strategy;
 const ExtractJwt = jwt.ExtractJwt;
 
-// Extracción del token desde las cookies
+
  export const cookiesExtractor = (req) => {
     let token = null;
     if (req && req.cookies) {
@@ -17,7 +17,7 @@ const ExtractJwt = jwt.ExtractJwt;
     return token;
 };
 
-// Inicializar Passport
+
 export const inicializarPassport = () => {
     passport.use("jwt", new JwtStrategy({
         jwtFromRequest: ExtractJwt.fromExtractors([cookiesExtractor]),
@@ -37,23 +37,23 @@ export const inicializarPassport = () => {
     }));
 };
 
-// Middleware para verificar el token
+
 export const verifyToken = (req, res, next) => {
-    const token = cookiesExtractor(req);  // Extraemos el token de las cookies
+    const token = cookiesExtractor(req);  
 
     if (!token) {
-        // Si no hay token, redirigir al usuario al dashboard (login)
+       
         return res.redirect("/dashboard");
     }
 
-    // Si el token está presente, continuar con el siguiente middleware (passport.authenticate)
+    
     passport.authenticate("jwt", { session: false }, (err, user) => {
         if (err || !user) {
-            return res.redirect("/dashboard");  // Si hay error en la autenticación, redirige al dashboard
+            return res.redirect("/dashboard");  
         }
-        req.user = user;  // Asignamos el usuario al request
-        next();  // Llamamos al siguiente middleware
-    })(req, res, next);  // Llamada explícita al middleware de Passport
+        req.user = user;  
+        next(); 
+    })(req, res, next);  
 };
 
 

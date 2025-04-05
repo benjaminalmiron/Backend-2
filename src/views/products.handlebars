@@ -3,53 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
+   <script src="https://cdn.tailwindcss.com"></script> 
 </head>
-<body>
-    <h1>Productos Disponibles</h1>
-
-    {{#if products.length}}
-        <ul>
-            {{#each products}}
-                <li>
-                    <h3>{{this.title}}</h3>
-                    <p>Precio: ${{this.price}}</p>
-                    <p>{{this.description}}</p>
-                    <form action="/cart/add" method="POST">
-                        <input type="hidden" name="productId" value="{{this._id}}">
-                        <input type="number" name="quantity" value="1" min="1" required>
-                        <button type="submit">Agregar al Carrito</button>
-                    </form>
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        <p>No hay productos disponibles en este momento.</p>
-    {{/if}}
-
-    <!-- Formulario para Cerrar sesión -->
-    <form id="logoutForm" action="/api/sessions/logout" method="post">
-        <button type="submit" class="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200">
+<title>Productos</title>
+</head>
+<title>Productos</title>
+</head>
+<body class="bg-gray-100 font-sans text-gray-700">
+     <form id="logoutForm" action="/api/sessions/logout" method="post" class="absolute top-4 right-4">
+        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200">
             Cerrar sesión
         </button>
     </form>
+    <h1 class="text-2xl font-bold text-center py-4">Productos Disponibles</h1>
+
+    {{#if products.length}}
+        <div class="flex flex-wrap justify-center gap-6">
+            {{#each products}}
+                <div class="w-80 bg-white border border-gray-300 rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-center text-blue-500">{{this.title}}</h3>
+                    <p class="text-center text-lg text-green-700 mb-4">Precio: ${{this.price}}</p>
+                    <p class="text-gray-600 mb-4">{{this.description}}</p>
+                    <form action="/cart/add" method="POST" class="flex flex-col items-center space-y-4">
+                        <input type="hidden" name="productId" value="{{this._id}}">
+                        <input type="number" name="quantity" value="1" min="1" required class="p-2 border border-gray-300 rounded-md w-full mb-4">
+                        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-center">
+                            Agregar al Carrito
+                        </button>
+                    </form>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <p class="text-center text-lg text-red-500 mt-4">No hay productos disponibles en este momento.</p>
+    {{/if}}
+</body>
+</body>
+</html>
 
     <script>
-        // Obtener el formulario de cierre de sesión
-        const logoutForm = document.getElementById('logoutForm');
         
+        const logoutForm = document.getElementById('logoutForm');
         logoutForm.addEventListener('submit', function(event) {
-            event.preventDefault();  // Evitar el envío tradicional del formulario
-
-            // Enviar la solicitud de cierre de sesión usando fetch
+            event.preventDefault();  
             fetch(logoutForm.action, {
                 method: logoutForm.method,
-                credentials: 'same-origin'  // Enviar cookies si es necesario
+                credentials: 'same-origin' 
             })
             .then(response => {
                 if (response.ok) {
-                    // Redirigir al usuario al dashboard después de cerrar sesión
-                    window.location.href = "/dashboard";  // Redirige al dashboard
+                    window.location.href = "/dashboard";  
                 } else {
                     console.error("Error al cerrar sesión");
                 }

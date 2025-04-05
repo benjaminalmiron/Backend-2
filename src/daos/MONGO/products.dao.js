@@ -6,11 +6,11 @@ class ProductsDAO {
   }
 
     get = async () =>   await productsModel.find();
-    // En product.dao.js
+   
 
 
 getBy = async filterobj => {
-    // Asegúrate de que el _id se convierte correctamente en ObjectId
+    
     if (filterobj._id && !Types.ObjectId.isValid(filterobj._id)) {
         throw new Error('ID no válido');
     }
